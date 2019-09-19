@@ -36,7 +36,7 @@
         data () {
             return {
                 form: {
-                    intro: '',
+                    intro: '	 本人性格开朗、稳重、有活力，待人热情、真诚；工作认真负责，积极主动，能吃苦耐劳，用于承受压力，勇于创新；有很强的组织能力和团队协作精神，具有较强的适应能力；纪律性强，工作积极配合；意志坚强，具有较强的无私奉献精神。',
                     target: '',
                     achievement: '',
                     interest: '',
@@ -61,11 +61,14 @@
     }
     .cell-title {
         margin-bottom: 20px;
+        color: #631833;
+        font-size: 32px;
+        font-weight: bold;
     }
     .cell-control {
         width: 100%;
         resize: none;
-        min-height: 150px;
+        min-height: 380px;
         font-size: 28px;
         padding: 10px;
         box-sizing: border-box;

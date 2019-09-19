@@ -30,10 +30,11 @@
     .user {
         display: flex;
         align-items: stretch;
+        margin-bottom: 2px;
     }
     .avatar {
-        width: 180px;
-        height: 180px;
+        width: 190px;
+        height: 190px;
         object-fit: cover;
         -webkit-object-fit: cover;
     }
@@ -41,7 +42,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding-left: 20px;
+        padding-left: 27px;
         flex: 1;
     }
     .cell {
@@ -50,6 +51,7 @@
     }
     .name {
         font-size: 32px;
-        color: #333;
+        color: #666;
+        font-weight: bold;
     }
 </style>
