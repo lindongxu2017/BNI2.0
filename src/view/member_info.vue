@@ -1,0 +1,97 @@
+<template>
+    <div class="member">
+        <div class="header-wrapper">
+            <img class="avatar" src="@/assets/avatar.jpg">
+            <div class="username">林哲宇</div>
+            <div class="industry">室内空间设计</div>
+            <div class="position">活动统筹组员</div>
+        </div>
+        <div class="section">
+            <div class="cell-title">联系方式</div>
+            <div class="cell-value">18718571732</div>
+            <div class="cell-value">深圳市勤瀚堂电子商务有限公司</div>
+            <div class="cell-value">五和大道南富奇创业大厦601</div>
+        </div>
+        <div class="section">
+            <div class="cell-title">行业介绍</div>
+            <div class="cell-value">需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐</div>
+        </div>
+        <div class="section">
+            <div class="cell-title">需要的引荐</div>
+            <div class="cell-value">需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐</div>
+        </div>
+        <div class="gains-btn">
+            <van-button type="primary" size="small" @click="gains">他的GAINS表</van-button>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'member',
+        data () {
+            return {
+
+            }
+        },
+        mounted () {
+            
+        },
+        methods: {
+            gains () {
+                this.$router.push({name: 'gains', params: {id: 1}})
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .header-wrapper {
+        padding: 30px 20px;
+        text-align: center;
+        position: relative;
+        background-color: #fff;
+        font-size: 0;
+        margin-bottom: 10px;
+    }
+    .avatar {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    .position {
+        position: absolute;
+        top: 30px;
+        right: 20px;
+        font-size: 28px;
+    }
+    .username {
+        font-size: 32px;
+        line-height: 1;
+        margin-bottom: 20px;
+    }
+    .industry {
+        color: #666;
+        font-size: 28px;
+        line-height: 1;
+    }
+    .section {
+        padding: 30px 20px;
+        background-color: #fff;
+        margin-bottom: 10px;
+    }
+    .cell-title {
+        margin-bottom: 20px;
+    }
+    .cell-value {
+        font-size: 28px;
+        padding-left: 20px;
+        color: #666;
+    }
+    .gains-btn {
+        text-align: center;
+        padding: 30px;
+    }
+</style>
