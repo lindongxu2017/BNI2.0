@@ -55,19 +55,19 @@
         </div>
         <div class="cell-form">
           <label class="cell-label" for>代表行业 -</label>
-          <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名" />
+          <input class="cell-input" type="text" v-model="form.industry" placeholder="请输入代表行业" />
         </div>
         <div class="cell-form">
           <label class="cell-label" for>联系电话 -</label>
-          <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名" />
+          <input class="cell-input number" type="number" v-model="form.phone" placeholder="请输入联系电话" />
         </div>
         <div class="cell-form">
           <label class="cell-label" for>所在区域 -</label>
-          <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名" />
+          <input class="cell-input" type="text" v-model="form.area" placeholder="请输入所在区域" />
         </div>
         <div class="cell-form">
           <label class="cell-label" for>分会名称 -</label>
-          <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名" />
+          <input class="cell-input" type="text" v-model="form.nickname" placeholder="请输入分会名称" />
         </div>
 
         <!-- <van-field
@@ -103,7 +103,7 @@
       </div>
 
       <div class="btn-wrapper">
-        <van-button type="primary" size="large" class="confirm">提交</van-button>
+        <van-button type="primary" @click="confirms" size="large" class="confirm">提交</van-button>
       </div>
       <van-popup round v-model="show" position="bottom">
         <van-picker
@@ -126,11 +126,16 @@ export default {
     return {
       form: {
         username: "",
+        industry:"",
+        phone:"",
+        area:"",
+        nickname:"",
         tel: "",
         code: "",
         identity: "1",
         identity_text: "会员"
       },
+      state:false,
       code_text: "获取",
       clientHeight: 603,
       columns: [
@@ -173,6 +178,17 @@ export default {
         time = parseInt(time) - 1;
         this.code_text = time + "s";
       }, 1000);
+    },
+    confirms(){
+        if (this.state) {
+            this.$router.push({
+                path:"/"
+            })
+        }else{
+            this.$router.push({
+                path:"/audit"
+            })
+        }
     }
   }
 };
@@ -248,6 +264,7 @@ export default {
   font-size: 28px;
   color: #333;
   background-color: #eee;
+  appearance: none;
 }
 input.cell-tel {
   width: 293px;
