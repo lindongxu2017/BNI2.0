@@ -48,6 +48,7 @@
 <style>
     html, body {
         background-color: #f7f7f7;
+        color: #333;
     }
     * {
         margin: 0;
