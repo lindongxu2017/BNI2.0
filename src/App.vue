@@ -52,7 +52,6 @@ export default {
 </script>
 
 <style>
-<<<<<<< HEAD
     html, body {
         background-color: #f7f7f7;
         color: #333;
@@ -69,22 +68,4 @@ export default {
         background-color: #7C384F;
         border-color: #7C384F;
     }
-=======
-html,
-body {
-  background-color: #f7f7f7;
-}
-* {
-  margin: 0;
-  padding: 0;
-  appearance: none;
-}
-img {
-  content: normal !important;
-}
-.van-button--primary {
-  background-color: #7c384f;
-  border-color: #7c384f;
-}
->>>>>>> ebed1854c516fdad47924dc517276c68371b2e99
 </style>
