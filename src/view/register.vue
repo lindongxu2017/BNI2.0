@@ -55,7 +55,11 @@
         </div>
         <div class="cell-form">
           <label class="cell-label" for>代表行业 -</label>
+<<<<<<< HEAD
+          <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名"/>
+=======
           <input class="cell-input" type="text" v-model="form.industry" placeholder="请输入代表行业" />
+>>>>>>> 2d8cb13338a5a29a29246bee597e64971dd93b6c
         </div>
         <div class="cell-form">
           <label class="cell-label" for>联系电话 -</label>

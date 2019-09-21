@@ -96,6 +96,9 @@ export default {
   text-align: center;
   margin-top: 40px;
 }
+.submit-btn:active {
+  opacity: 0.9;
+}
 .cell-save {
   border: none;
   outline: none;

@@ -25,7 +25,7 @@
                     {name: '会籍管理', path: '/membership', icon: require('@/assets/icon_membership.png')},
                     {name: '缴费记录', path: '/payrecord', icon: require('@/assets/icon_payrecord.png')},
                     {name: '我的嘉宾', path: '/guest', icon: require('@/assets/icon_guest.png')},
-                    {name: '我的Gains', path: '/guest', icon: require('@/assets/icon_gains.png')},
+                    {name: '我的Gains', path: '/gains/1', icon: require('@/assets/icon_gains.png')},
                 ]
             }
         }
