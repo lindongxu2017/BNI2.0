@@ -9,6 +9,7 @@ import activity from '@/view/activity'
 import userinfo from '@/view/userinfo'
 import membership from '@/view/membership'
 import renew from '@/view/renew'
+import audit from '@/view/audit'
 import payrecord from '@/view/payment_record'
 import guest from '@/view/my_guest'
 import register from '@/view/register'
@@ -16,6 +17,7 @@ import register from '@/view/register'
 Vue.use(Router)
 
 export default new Router({
+    // mode: 'history',
     routes: [
         {
             path: '/',
@@ -61,6 +63,10 @@ export default new Router({
             path: '/register',
             name: 'register',
             component: register
+        }, {
+            path: '/audit',
+            name: 'audit',
+            component: audit
         }
     ]
 })

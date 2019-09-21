@@ -3,7 +3,7 @@
     <div class="header-wrapper">
       <img class="avatar" src="@/assets/avatar.jpg" />
       <div class="username">林哲宇</div>
-      <div class="industry">室内空间设计</div>
+      <div class="industry ">室内空间设计</div>
       <div class="position">活动统筹组员</div>
     </div>
     <div class="section">
