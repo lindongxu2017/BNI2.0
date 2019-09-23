@@ -7,9 +7,15 @@
     </van-search>-->
     <div class="search_bar">
       <div class="search_box">
-        <input placeholder="会员名称模糊搜索" class="search_input" type="text" />
+        <input
+          placeholder="会员名称模糊搜索"
+          @keyup.13="onSearch"
+          v-model="keyword"
+          class="search_input"
+          type="text"
+        />
         <dir class="search_btn">
-          <img src="../assets/L-search_btn.png" alt />
+          <img src="../assets/L-search_btn.png" @click="onSearch" />
         </dir>
       </div>
       <div class="side_btn" @click="show = true">
@@ -25,7 +31,7 @@
         @load="getlist"
       >
         <div class="item" v-for="(item, index) in list" :key="index">
-          <user></user>
+          <user :info="item"></user>
         </div>
       </van-list>
     </van-pull-refresh>
@@ -33,7 +39,7 @@
       <p class="title">选择要搜索的联盟</p>
       <van-grid :border="false" :column-num="2">
         <van-grid-item v-for="(value, index) in type" :key="index">
-          <img :src="value.icon" class="imgs" slot="icon" alt />
+          <img :src="value.image" class="imgs" slot="icon" alt />
           <p class="texts" slot="text">{{value.name}}</p>
         </van-grid-item>
       </van-grid>
@@ -42,10 +48,6 @@
 </template>
 
 <script>
-var arr = [];
-for (var i = 0; i < 10; i++) {
-  arr.push(i);
-}
 import user from "@/components/user_item";
 export default {
   name: "index",
@@ -57,27 +59,65 @@ export default {
       list: [],
       show: false,
       type: [
-        { name: "全部", icon:require("@/assets/L-all.png") },
-        { name: "建筑联盟", icon: require("@/assets/L-all.png") },
-        { name: "产品联盟", icon: require("@/assets/L-product.png") },
-        { name: "企业服务", icon: require("@/assets/L-service.png") }
+        // { name: "全部", icon: require("@/assets/L-all.png") },
+        // { name: "建筑联盟", icon: require("@/assets/L-all.png") },
+        // { name: "产品联盟", icon: require("@/assets/L-product.png") },
+        // { name: "企业服务", icon: require("@/assets/L-service.png") }
       ],
       isLoading: false
     };
   },
+  watch: {
+    keyword: function() {
+      if (this.keyword === "") {
+        this.list = [];
+        this.getlist();
+      }
+    }
+  },
   methods: {
     onSearch() {
-      console.log(this.keyword);
+      if (this.keyword) {
+        this.list = [];
+        this.getlist();
+        this.getAllianceList();
+      }
     },
+    // 获取会员列表
     getlist() {
-      setTimeout(() => {
-        this.isLoading = false;
-        this.loading = false;
-        this.list = this.list.concat(arr);
-        if (this.list.length > 30) {
-          this.finished = true;
+      this.fn.ajax(
+        "get",
+        {
+          store_id: 13,
+          keyword: this.keyword,
+          page: Math.ceil(this.list.length / 10) + 1
+        },
+        "api/index/index",
+        res => {
+          this.isLoading = false;
+          this.loading = false;
+          this.list = this.list.concat(res.data.data);
+          if (this.list.length >= res.data.total) {
+            this.finished = true;
+          }
         }
-      }, 1000);
+      );
+    },
+    // 获取联盟列表
+    getAllianceList() {
+      this.fn.ajax(
+        "get",
+        {
+          store_id: 13,
+          keyword: this.keyword,
+          page: 1
+        },
+        "api/index/user_category",
+        res => {
+          console.log(res);
+          this.type = res.data;
+        }
+      );
     },
     onRefresh() {
       this.list = [];
@@ -88,6 +128,9 @@ export default {
   },
   components: {
     user
+  },
+  created() {
+    this.getAllianceList();
   }
 };
 </script>

@@ -13,11 +13,12 @@ import audit from '@/view/audit'
 import payrecord from '@/view/payment_record'
 import guest from '@/view/my_guest'
 import register from '@/view/register'
+import sign from '@/view/sign'
 
 Vue.use(Router)
 
 export default new Router({
-    // mode: 'history',
+    mode: 'history',
     routes: [
         {
             path: '/',
@@ -67,6 +68,10 @@ export default new Router({
             path: '/audit',
             name: 'audit',
             component: audit
+        },{
+            path: '/sign',
+            name: 'sign',
+            component: sign
         }
     ]
 })

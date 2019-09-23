@@ -1,36 +1,41 @@
 <template>
   <div class="member">
     <div class="header-wrapper">
-      <img class="avatar" src="@/assets/avatar.jpg" />
-      <div class="username">林哲宇</div>
-      <div class="industry ">室内空间设计</div>
+      <img class="avatar" :src="userInfo.avatar" />
+      <div class="username">{{userInfo.nickname}}</div>
+      <div class="industry">室内空间设计</div>
       <div class="position">活动统筹组员</div>
     </div>
     <div class="section">
       <div class="cell-title">联系方式</div>
       <div class="cell-box">
         <img class="cell-imgs1" src="@/assets/L-phone.png" alt />
-        <p class="cell-value">18718571732</p>
+        <p class="cell-value">{{userInfo.mobile}}</p>
       </div>
       <div class="cell-box">
         <img class="cell-imgs2" src="@/assets/L-address.png" alt />
-        <p class="cell-value">五和大道南富奇创业大厦601</p>
+        <p class="cell-value">{{userInfo.addr}}</p>
       </div>
       <div class="cell-box">
         <img class="cell-imgs3" src="@/assets/L-company.png" alt />
-        <p class="cell-value">深圳市勤瀚堂电子商务有限公司</p>
+        <p class="cell-value">{{userInfo.company_name}}</p>
       </div>
     </div>
     <div class="section">
       <div class="cell-title">行业介绍</div>
-      <div class="cell-value cell-text">需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐</div>
+      <div class="cell-value cell-text">{{userInfo.introduction}}</div>
     </div>
     <div class="section">
       <div class="cell-title">需要的引荐</div>
-      <div class="cell-value cell-text">需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐需要的引荐</div>
+      <div class="cell-value cell-text">{{userInfo.need_recommend}}</div>
     </div>
     <div class="gains-btn">
-      <van-button style="background:#631030;border-radius: 4px" type="primary" size="small" @click="gains">他的GAINS表</van-button>
+      <van-button
+        style="background:#631030;border-radius: 4px"
+        type="primary"
+        size="small"
+        @click="gains"
+      >他的GAINS表</van-button>
     </div>
   </div>
 </template>
@@ -39,13 +44,32 @@
 export default {
   name: "member",
   data() {
-    return {};
+    return {
+      ids: "",
+      userInfo: {}
+    };
   },
   mounted() {},
   methods: {
     gains() {
-      this.$router.push({ name: "gains", params: { id: 1 } });
+      this.$router.push({ name: "gains", params: { id: this.ids } });
     }
+  },
+  created() {
+    this.ids = this.$route.params.id;
+    console.log(this.ids);
+    this.fn.ajax(
+      "get",
+      {
+        store_id: 13,
+        id: this.ids
+      },
+      "api/index/user_detail",
+      res => {
+        console.log(res);
+        this.userInfo = res.data;
+      }
+    );
   }
 };
 </script>
@@ -55,7 +79,11 @@ export default {
   padding: 60px 20px 30px;
   text-align: center;
   position: relative;
-  background:linear-gradient(0deg,rgba(253,253,253,1) 30%,rgba(216,191,196,1));
+  background: linear-gradient(
+    0deg,
+    rgba(253, 253, 253, 1) 30%,
+    rgba(216, 191, 196, 1)
+  );
   font-size: 0;
   /* margin-bottom: 10px; */
 }
@@ -110,10 +138,10 @@ export default {
   padding-left: 37px;
   margin-bottom: 28px;
 }
-.cell-text{
-    color: #333;
-    font-size: 20px;
-    line-height: 1.5;
+.cell-text {
+  color: #333;
+  font-size: 20px;
+  line-height: 1.5;
 }
 .cell-imgs1,
 .cell-imgs2,

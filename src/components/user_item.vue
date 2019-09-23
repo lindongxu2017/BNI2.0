@@ -1,11 +1,11 @@
 <template>
     <div class="user" @click="go_detail">
-        <img class="avatar" src="@/assets/avatar.jpg">
+        <img class="avatar" :src="info.avatar">
         <div class="info">
-            <div class="cell name">林哲宇</div>
-            <div class="cell">分会职务：活动统筹组员</div>
-            <div class="cell">代表行业：室内空间设计</div>
-            <div class="cell">联系电话：18718571732</div>
+            <div class="cell name">{{info.username}}</div>
+            <div class="cell">分会职务：{{info.job_name}}</div>
+            <div class="cell">代表行业：{{info.industry}}</div>
+            <div class="cell">联系电话：{{info.mobile}}</div>
         </div>
     </div>
 </template>
@@ -18,9 +18,10 @@
                 
             }
         },
+        props:['info'],
         methods: {
             go_detail() {
-                this.$router.push({name: 'member', params: {id: 1}})
+                this.$router.push({name: 'member', params: {id: this.info.id}})
             }
         }
     }

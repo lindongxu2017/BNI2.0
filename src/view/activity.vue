@@ -39,7 +39,8 @@
                 isLoading: false,
                 show: false,
                 code_loading: true,
-                shareVisible: false
+                shareVisible: false,
+                userInfo:{}
             }
         },
         mounted () {
@@ -112,7 +113,10 @@
         },
         components: {
             item
-        }
+        },
+        created() {
+            this.userInfo = JSON.parse(localStorage.userinfo)
+        },
     }
 </script>
 

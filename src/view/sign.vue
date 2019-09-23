@@ -24,8 +24,8 @@
         </div>
       </div>
 
-      <div v-if="form.identity == 1">
-        <div class="cell-form">
+     
+        <!-- <div class="cell-form">
           <label class="cell-label" for>手机号 -</label>
           <input class="cell-tel cell-input" type="text" v-model="form.tel" placeholder="请输入手机号码" />
         </div>
@@ -33,8 +33,7 @@
           <label class="cell-label" style="vertical-align: middle;" for>验证码 -</label>
           <input class="cell-code cell-input" type="text" v-model="form.code" placeholder="请输入验证码" />
           <button :disabled="code_text != '获取'" class="cell-get" @click="getcode">{{code_text}}</button>
-          <!-- <van-button :disabled="code_text != '获取'" type="primary" size="small">{{code_text}}</van-button> -->
-        </div>
+        </div> -->
         <!-- <van-field v-model="form.tel" label-align="right" label="手机号码 -" placeholder="请输入手机号码" />
         <van-field v-model="form.code" label-align="right" label="验证码 -" placeholder="请输入验证码">-->
 
@@ -46,9 +45,9 @@
             @click="getcode"
           >{{code_text}}</van-button>
         </div>-->
-      </div>
+   
 
-      <div v-else>
+      <div>
         <div class="cell-form">
           <label class="cell-label" for>个人姓名 -</label>
           <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名" />
@@ -139,9 +138,9 @@ export default {
       code_text: "获取",
       clientHeight: 603,
       columns: [
-        { name: "会员", value: 1 },
-        { name: "观察员", value: 2 },
-        { name: "大使", value: 3 }
+        { name: "嘉宾", value: 3 },
+        { name: "观察员", value: 4 },
+        { name: "大使", value: 5 }
       ],
       show: false,
       styles: {
@@ -180,6 +179,7 @@ export default {
       }, 1000);
     },
     confirms() {
+      
       if (this.state) {
         this.$router.push({
           path: "/"
@@ -202,9 +202,11 @@ export default {
 
 <style scoped>
 .register {
+  padding-top: 300px;
   background-size: 100%;
   background-repeat: no-repeat;
   box-sizing: border-box;
+  background-image: url("../assets/L-observerBg.png");
 }
 .cell-box {
   display: flex;

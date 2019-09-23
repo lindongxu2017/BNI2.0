@@ -1,7 +1,7 @@
 <template>
   <div
     class="register"
-    :style="{minHeight: clientHeight + 'px',paddingTop:(form.identity == 1?218:161)+'px',backgroundImage:'url(' + (form.identity == 1?styles.memberImg:styles.observerImg) + ')'}"
+    :style="{minHeight: clientHeight + 'px',paddingTop:'230px',backgroundImage:'url(' + (form.identity == 1?styles.memberImg:styles.observerImg) + ')'}"
   >
     <div>
       <!-- <van-field
@@ -15,51 +15,44 @@
       />-->
 
       <!-- 选择身份 -->
-      <div class="cell-form">
+      <!-- <div class="cell-form">
         <label class="cell-label" style="vertical-align: middle;" for>参会身份 -</label>
 
         <p @click="show = true" class="cell-select">{{form.identity_text}}</p>
         <div @click="show = true" class="cell-popup">
           <img src="@/assets/L-popup.png" alt />
         </div>
+      </div>-->
+
+      <div class="cell-form">
+        <label class="cell-label">手机号 -</label>
+        <input class="cell-tel cell-input" type="text" v-model="form.mobile" placeholder="请输入手机号码" />
       </div>
+      <div class="cell-form">
+        <label class="cell-label" style="vertical-align: middle;" for>验证码 -</label>
+        <input class="cell-code cell-input" type="text" v-model="form.code" placeholder="请输入验证码" />
+        <button :disabled="code_text != '获取'" class="cell-get" @click="getcode">{{code_text}}</button>
+        <!-- <van-button :disabled="code_text != '获取'" type="primary" size="small">{{code_text}}</van-button> -->
+      </div>
+      <!-- <van-field v-model="form.tel" label-align="right" label="手机号码 -" placeholder="请输入手机号码" />
+      <van-field v-model="form.code" label-align="right" label="验证码 -" placeholder="请输入验证码">-->
 
-      <div v-if="form.identity == 1">
-        <div class="cell-form">
-          <label class="cell-label" for>手机号 -</label>
-          <input class="cell-tel cell-input" type="text" v-model="form.tel" placeholder="请输入手机号码" />
-        </div>
-        <div class="cell-form">
-          <label class="cell-label" style="vertical-align: middle;" for>验证码 -</label>
-          <input class="cell-code cell-input" type="text" v-model="form.code" placeholder="请输入验证码" />
-          <button :disabled="code_text != '获取'" class="cell-get" @click="getcode">{{code_text}}</button>
-          <!-- <van-button :disabled="code_text != '获取'" type="primary" size="small">{{code_text}}</van-button> -->
-        </div>
-        <!-- <van-field v-model="form.tel" label-align="right" label="手机号码 -" placeholder="请输入手机号码" />
-        <van-field v-model="form.code" label-align="right" label="验证码 -" placeholder="请输入验证码">-->
-
-        <!-- <div slot="right-icon">
+      <!-- <div slot="right-icon">
           <van-button
             :disabled="code_text != '获取'"
             type="primary"
             size="small"
             @click="getcode"
           >{{code_text}}</van-button>
-        </div>-->
-      </div>
+      </div>-->
 
-      <div v-else>
-        <div class="cell-form">
+      <!-- <div class="cell-form">
           <label class="cell-label" for>个人姓名 -</label>
           <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名" />
         </div>
         <div class="cell-form">
           <label class="cell-label" for>代表行业 -</label>
-<<<<<<< HEAD
-          <input class="cell-input" type="text" v-model="form.username" placeholder="请输入参会人姓名"/>
-=======
           <input class="cell-input" type="text" v-model="form.industry" placeholder="请输入代表行业" />
->>>>>>> 2d8cb13338a5a29a29246bee597e64971dd93b6c
         </div>
         <div class="cell-form">
           <label class="cell-label" for>联系电话 -</label>
@@ -72,9 +65,9 @@
         <div class="cell-form">
           <label class="cell-label" for>分会名称 -</label>
           <input class="cell-input" type="text" v-model="form.nickname" placeholder="请输入分会名称" />
-        </div>
+      </div>-->
 
-        <!-- <van-field
+      <!-- <van-field
           v-model="form.username"
           label-align="right"
           label="参会人姓名 -"
@@ -103,11 +96,10 @@
           label-align="right"
           label="分会名称 -"
           placeholder="请输入分会名称"
-        />-->
-      </div>
+      />-->
 
       <div class="btn-wrapper">
-        <van-button type="primary" @click="confirms" size="large" class="confirm">提交</van-button>
+        <van-button type="primary" @click="checkCode" size="large" class="confirm">提交</van-button>
       </div>
       <van-popup round v-model="show" position="bottom">
         <van-picker
@@ -130,22 +122,22 @@ export default {
     return {
       form: {
         username: "",
-        industry:"",
-        phone:"",
-        area:"",
-        nickname:"",
+        industry: "",
+        phone: "",
+        area: "",
+        nickname: "",
         tel: "",
         code: "",
         identity: "1",
         identity_text: "会员"
       },
-      state:false,
+      state: false,
       code_text: "获取",
       clientHeight: 603,
       columns: [
-        { name: "会员", value: 1 },
-        { name: "观察员", value: 2 },
-        { name: "大使", value: 3 }
+        { name: "会员", value: 3 },
+        { name: "观察员", value: 4 },
+        { name: "大使", value: 5 }
       ],
       show: false,
       styles: {
@@ -165,14 +157,27 @@ export default {
     },
     getcode() {
       if (
-        this.form.tel == "" ||
-        !/^1(3|4|5|6|7|8|9)\d{9}$/.test(this.form.tel)
+        this.form.mobile == "" ||
+        !/^1(3|4|5|6|7|8|9)\d{9}$/.test(this.form.mobile)
       ) {
         this.$toast("请输入正确的手机号码");
         return;
       }
       var time = 60;
       this.code_text = time + "s";
+      this.fn.ajax(
+        "post",
+        {
+          mobile: this.form.mobile,
+          event: "memberapply",
+          store_id: 13
+        },
+        "api/sms/send",
+        res => {
+          console.log(res);
+          this.$toast(res.msg);
+        }
+      );
       var timer = setInterval(() => {
         if (parseInt(time) == 0) {
           this.code_text = "获取";
@@ -183,16 +188,50 @@ export default {
         this.code_text = time + "s";
       }, 1000);
     },
-    confirms(){
-        if (this.state) {
-            this.$router.push({
-                path:"/"
+    checkCode() {
+      if (
+        this.form.mobile == "" ||
+        !/^1(3|4|5|6|7|8|9)\d{9}$/.test(this.form.mobile)
+      ) {
+        this.$toast("请输入正确的手机号");
+      } else if (!this.form.code) {
+        this.$toast("请输入验证码");
+      } else {
+        this.fn.ajax(
+          "post",
+          {
+            mobile: this.form.mobile,
+            event: "memberapply",
+            captcha: this.form.code,
+            store_id: 13
+          },
+          "api/sms/check",
+          res => {
+            console.log(res);
+            this.confirms();
+          }
+        );
+      }
+    },
+    confirms() {
+      this.fn.ajax(
+        "post",
+        {
+          store_id: 13,
+          mobile: this.form.mobile,
+          captcha: this.form.code
+        },
+        "api/user/member_apply",
+        res => {
+          console.log(res);
+          this.$toast(res.msg);
+          setTimeout(() => {
+            this.$router.replace({
+              path: "/audit"
             })
-        }else{
-            this.$router.push({
-                path:"/audit"
-            })
+          }, 1000);
         }
+      );
     }
   }
 };
@@ -220,7 +259,7 @@ export default {
 }
 .cell-form {
   margin-top: 40px;
-  padding-left: 73px;
+  padding-left: 90px;
   font-size: 0;
 }
 .cell-select {
@@ -289,7 +328,7 @@ input.cell-code {
   text-align: center;
   outline: none;
   border: none;
-  vertical-align: middle
+  vertical-align: middle;
 }
 input {
   border: none;

@@ -51,7 +51,7 @@
         name: 'activity_item',
         data () {
             return {
-
+                
             }
         },
         props: ['info'],
@@ -62,7 +62,8 @@
             share () {
                 this.$emit('share', {id: 1})
             }
-        }
+        },
+      
     }
 </script>
 
