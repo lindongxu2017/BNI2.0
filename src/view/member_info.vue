@@ -3,7 +3,7 @@
     <div class="header-wrapper">
       <img class="avatar" :src="userInfo.avatar" />
       <div class="username">{{userInfo.nickname}}</div>
-      <div class="industry">室内空间设计</div>
+      <div class="industry">{{userInfo.industry}}</div>
       <div class="position">活动统筹组员</div>
     </div>
     <div class="section">

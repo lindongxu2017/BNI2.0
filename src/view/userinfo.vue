@@ -2,14 +2,17 @@
     <div class="userinfo">
         <van-cell-group class="field-wrapper">
             <van-field v-model="form.name" type="text" :border="false" label="名字" placeholder="请输入名字" />
+            <van-field v-model="form.industry" readonly type="text" :border="false" label="代表行业" placeholder="请输入代表行业"/>
             <van-field v-model="form.identity" type="text" :border="false" label="身份" placeholder="请输入身份" />
             <van-field v-model="form.union" readonly type="text" :border="false" label="所属联盟" placeholder="请选择所属联盟"  @click="show = true">
                 <div class="van-select-btn" slot="button">
                     <img src="@/assets/icon_select.png">
                 </div>
             </van-field>
-            <van-field v-model="form.industry" type="text" :border="false" label="代表行业" placeholder="请输入代表行业" />
-            <van-field v-model="form.contact" type="text" :border="false" label="联系方式" placeholder="请输入联系方式" />
+
+            <van-field v-model="form.contact" type="text" :border="false" label="当前电话" placeholder="">
+                <van-button  class="van-update-btn" slot="button" size="small" type="primary">更新</van-button>
+            </van-field>
             <van-field v-model="form.company_name" type="text" :border="false" label="公司名称" placeholder="请输入公司名称" />
             <van-field v-model="form.company_addr" type="text" :border="false" label="公司地址" placeholder="请输入公司地址" />
             <!-- <van-field v-model="form.recommend" type="textarea" :border="false" label="需要引荐" placeholder="请输入需要引荐" /> -->
@@ -20,12 +23,18 @@
                     <textarea placeholder="请输入成功案例" v-model="form.case"></textarea>
                 </div>
             </div>
+            <div class="van-field-box">
+                <div class="van-field-lable">行业介绍</div>
+                <div class="field-value">
+                    <textarea placeholder="请输入行业介绍" v-model="form.introduction"></textarea>
+                </div>
+            </div>
         </van-cell-group>
         <van-popup round v-model="show" position="bottom">
             <van-picker show-toolbar @cancel="show=false" @confirm="select" :columns="columns" value-key="name"/>
         </van-popup>
         <div class="submit-btn">
-            <van-button type="primary" size="small">保存修改</van-button>
+            <van-button style="backgroundColor: #633842;" type="primary" size="small">保存修改</van-button>
         </div>
     </div>
 </template>
@@ -44,7 +53,8 @@
                     company_name: '',
                     company_addr: '',
                     recommend: '',
-                    case: ''
+                    case: '', // 
+                    introduction:"" // 行业介绍
                 },
                 show: false,
                 columns: [
@@ -93,6 +103,11 @@
         min-width: 90px;
         height: 30px;
     }
+    .userinfo .van-update-btn{
+        background-color: #633842;
+        min-width: 52px;
+        width: 52px;
+    }
 </style>
 
 <style scoped>
@@ -118,6 +133,7 @@
     .van-select-btn img {
         width: 13px;
     }
+
     .van-field-box {
         padding: 10px 16px;
     }

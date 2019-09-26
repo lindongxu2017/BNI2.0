@@ -14,6 +14,8 @@ import payrecord from '@/view/payment_record'
 import guest from '@/view/my_guest'
 import register from '@/view/register'
 import sign from '@/view/sign'
+import telUpdate from '@/view/tel_update'
+import telBind from '@/view/tel_bind'
 
 Vue.use(Router)
 
@@ -69,9 +71,17 @@ export default new Router({
             name: 'audit',
             component: audit
         },{
-            path: '/sign',
+            path: '/sign/:id',
             name: 'sign',
             component: sign
-        }
+        },{
+            path: '/tel_update',
+            name: 'tel_update',
+            component: telUpdate
+        },{
+            path: '/tel_bind',
+            name: 'tel_bind',
+            component: telBind
+        },
     ]
 })

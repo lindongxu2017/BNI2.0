@@ -8,8 +8,6 @@ var myfn = {
     ajax(method, data, url, fn, error) {
         // 
         data.store_id = 13
-
-        url = "/http/" + url;
         axios({
             method, data, url, params: data,
             headers: {
@@ -41,7 +39,7 @@ var myfn = {
             case 9998:
                 // 没权限
                 fn(res.data)
-                
+
                 break
             case 9997:
                 // 没有会员权限
@@ -60,6 +58,8 @@ var myfn = {
                 fn(res.data)
                 break
             default:
+                fn(res.data)
+
                 // todo
                 break
         }
@@ -67,9 +67,9 @@ var myfn = {
 
     // 公司公众号 登录
 
-    getMyWxCode () {
+    getMyWxCode() {
         var url = location.protocol + '//' + location.host
-        console.log(url)
+        console.log(url);
         myfn.ajax('get', {
             redirect_uri: url,
             store_id: 13,
@@ -85,6 +85,16 @@ var myfn = {
     getWxCode() {
         // location.href = location.origin + '/api/user/createAuthorizeUrl?platform=wechat&redirect_uri='+escape(location.origin)+'&store_id=13'
         // location.href = 'http://dev-manage.haosailei.cn/wechat/redirect?url=' + escape(location.href) // getCode
+        var url = location.protocol + '//' + location.host
+        console.log(url);
+        myfn.ajax('get', {
+            redirect_uri: url,
+            store_id: 13,
+        }, "api/user/createauthorizeurl", res => {
+            // return
+            // location.href = res.data
+            console.log(res)
+        })
     },
 
     login() {
@@ -94,11 +104,10 @@ var myfn = {
         }
         let code = this.GetQueryString('code')
         let state = this.GetQueryString('state')
-        let url = 'api/user/third'
         if (code) {
             this.ajax('POST', {
                 code, state, platform: 'wechat', store_id: 13
-            }, url, res => {
+            }, "api/user/third", res => {
                 localStorage.access_token = res.data.userinfo.token
                 location.href = location.protocol + '//' + location.host
             })
@@ -193,6 +202,37 @@ var myfn = {
         var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
         var r = window.location.search.substr(1).match(reg)
         if (r != null) return unescape(r[2]); return ''
+    },
+    wxPay(info) {
+        function onBridgeReady() {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                {
+                    "appId": info.data.appId,     //公众号名称，由商户传入     
+                    "timeStamp": info.data.timeStamp,         //时间戳，自1970年以来的秒数     
+                    "nonceStr": info.data.nonceStr, //随机串     
+                    "package": info.data.package,
+                    "signType": "MD5",         //微信签名方式：     
+                    "paySign": info.data.paySign //微信签名 
+                },
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        // 使用以上方式判断前端返回,微信团队郑重提示：
+                        //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                    }
+                }
+            );
+        }
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            } else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        } else {
+            onBridgeReady();
+        }
     }
 }
 
