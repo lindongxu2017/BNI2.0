@@ -2,7 +2,7 @@
     <div class="renew">
         <van-radio-group v-model="radio" :border="false">
             <van-cell-group>
-                <van-cell v-for="(item, index) in list" :key="index" :title="item.name + '￥' + item.fee" clickable @click="radio = item.id">
+                <van-cell v-for="(item, index) in list" :key="index" :title="item.title" clickable @click="radio = item.id">
                     <van-radio checked-color="#07c160" slot="right-icon" :name="item.id">
                         <div class="check-icon-wrapper" slot="icon" slot-scope="props">
                             <img class="check-box" src="@/assets/icon_check_box.png">
@@ -32,8 +32,16 @@
             }
         },
         methods: {
-            pay () {}
-        }
+            pay () {
+                this.fn.ajax("get",{page:1},"api/vip/index",res=>{
+                    console.log(res)
+                    this.list = res.data.data
+                })
+            }
+        },
+        created() {
+            this.pay()
+        },
     }
 </script>
 

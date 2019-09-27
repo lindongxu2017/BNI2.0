@@ -234,7 +234,7 @@ export default {
 .imgs {
   width: 58px;
   height: 58px;
-  border-right: 50%;
+  border-radius: 50%;
   margin-bottom: 20px;
 }
 .texts {

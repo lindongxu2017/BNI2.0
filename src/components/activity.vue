@@ -18,7 +18,7 @@
             <van-button type="primary" v-if="!info.is_sign" @click="share" size="small">邀请嘉宾</van-button>
     </div>-->
     <div class="list">
-      <div class="current">
+      <div v-show="showDetails" class="current">
         <div class="title">
           <div class="text" v-text="detailData.name"></div>
           <div class="time">
@@ -29,11 +29,7 @@
         </div>
         <div class="username" v-text="detailData.active_info?detailData.active_info.name:''"></div>
         <div class="sign">
-          <span
-            @click="sign"
-            :class="[status ? 'signed' : '']"
-            v-text="status ? '已签到' : '签到'"
-          ></span>
+          <span @click="sign" :class="[status ? 'signed' : '']" v-text="status ? '已签到' : '签到'"></span>
           <div class="operation">
             <div @click="share">邀请嘉宾</div>
             <div>临时替代</div>
@@ -65,16 +61,19 @@ export default {
   name: "activity_item",
   data() {
     return {
-      detailData: {}
+      detailData: {},
+      showDetails:false, // 详情
     };
   },
-  props: ["info","status"],
+  props: ["info", "status"],
   methods: {
     sign() {
-      this.$emit(
-        "sign",
-        this.detailData.active_info.id ? this.detailData.active_info.id : ""
-      );
+      this.$emit("sign", {
+        active_id: this.detailData.active_info.id
+          ? this.detailData.active_info.id
+          : "",
+        id: this.detailData.id ? this.detailData.id : ""
+      });
 
       //  this.$router.push({name: 'sign', params: {id: this.detailData.id}})
     },
@@ -85,7 +84,10 @@ export default {
     getActiveDetail() {
       this.fn.ajax("get", {}, "api/active/detail", res => {
         console.log(res);
-        this.detailData = res.data;
+        if (res.data != []) {
+          this.detailData = res.data;
+          this.showDetails = true;
+        }
       });
     }
   },
@@ -104,7 +106,7 @@ export default {
   justify-content: space-between;
   font-size: 24px;
   color: #333;
-  background-color: #fff
+  background-color: #fff;
 }
 .title .status {
   color: #ccc;

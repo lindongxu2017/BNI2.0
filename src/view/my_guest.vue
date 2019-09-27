@@ -12,14 +12,14 @@
           <img class="avatar" src="@/assets/avatar.jpg" />
           <div class="info">
             <div>
-              <span>林哲宇</span>
+              <span>{{item.name}}</span>
               <span
-                :class="['status-text', index % 2 == 0 ? '' : 'unchecked']"
-              >（{{index % 2 == 0 ? '已签到' : '未签到'}}）</span>
+                :class="['status-text', item.sign_status=='2'? '' : 'unchecked']"
+              >（{{item.sign_status=='2' ? '已签到' : '未签到'}}）</span>
             </div>
           </div>
           <div class="date">2019/09/10</div>
-          <van-button v-if="index%2==0" type="primary" size="small">替TA缴费</van-button>
+          <van-button @click="payAnother(item.id)" v-if="item.status =='1'" type="primary" size="small">代替缴费</van-button>
           <van-button v-else type="primary" disabled size="small">已缴费</van-button>
         </div>
       </van-list>
@@ -41,31 +41,38 @@ export default {
   methods: {
     getlist() {
         
-      var arr = ['','','','','','','','','','']
-      setTimeout(() => {
-          this.loading = false
-          this.isLoading = false
-          this.list = this.list.concat(arr)
-          if (this.list.length > 30) {
-              this.finished = true
-          }
-      }, 1000)
-
-    //   this.fn.ajax("get", {}, "api/active_info/my_guests", res => {
-    //     console.log(res);
-    //     this.list = this.list.concat(res.data.data);
-    //     if (this.list.length >= res.data.total) {
-    //       this.finished = true;
-    //       this.loading = false;
-    //       this.isLoading = false;
-    //     }
-    //   });
+      // var arr = ['','','','','','','','','','']
+      // setTimeout(() => {
+      //     this.loading = false
+      //     this.isLoading = false
+      //     this.list = this.list.concat(arr)
+      //     if (this.list.length > 30) {
+      //         this.finished = true
+      //     }
+      // }, 1000)
+      this.loading = true;
+      this.fn.ajax("get", {}, "api/active_info/my_guests", res => {
+        console.log(res);
+        this.list = this.list.concat(res.data.data);
+        if (this.list.length >= res.data.total) {
+          this.finished = true;
+          this.loading = false;
+          this.isLoading = false;
+        }
+      });
     },
     onRefresh() {
       this.loading = true;
       this.finished = false;
       this.list = [];
       this.getlist();
+    },
+    // 替他缴费
+    payAnother(id){
+      this.fn.ajax("post",{id},"api/active_info_order/create_another_order",res =>{
+        console.log(res);
+        this.fn.payment_steps(2,res.data.id)
+      })
     }
   }
 };
@@ -81,8 +88,8 @@ export default {
   line-height: 19px;
 }
 .my-guest .van-button--disabled {
-  background-color: #ccc;
-  border-color: #ccc;
+  background-color: #ccc !important;
+  border-color: #ccc !important;
 }
 </style>
 

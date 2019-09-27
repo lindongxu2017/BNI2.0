@@ -64,8 +64,8 @@ export default {
     img {
         content: normal !important;
     }
-    .van-button--primary {
+    button.van-button--primary {
         background-color: #631030;
-        border-color: #631030;
+        border-color: #631030 ;
     }
 </style>

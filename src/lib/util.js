@@ -38,12 +38,15 @@ var myfn = {
                 break
             case 9998:
                 // 没权限
-                fn(res.data)
+                Toast(res.data.msg)
 
                 break
             case 9997:
                 // 没有会员权限
-                fn(res.data)
+                Toast(res.data.msg)
+                setTimeout(() => {
+                    location.href = location.protocol + "//" + location.host + "#/register"
+                }, 2000);
                 break
             case 9996:
                 // 微信code为空
@@ -77,26 +80,29 @@ var myfn = {
         }, "api/user/createAuthorizeUrl", res => {
             // return
             location.href = res.data
+            console.log(res)
         })
     },
 
     // 客户公众号 登录
 
     getWxCode() {
-        // location.href = location.origin + '/api/user/createAuthorizeUrl?platform=wechat&redirect_uri='+escape(location.origin)+'&store_id=13'
-        // location.href = 'http://dev-manage.haosailei.cn/wechat/redirect?url=' + escape(location.href) // getCode
-        var url = location.protocol + '//' + location.host
+
+        var url = location.protocol + '//' + location.host + "/" + location.hash
         console.log(url);
         myfn.ajax('get', {
             redirect_uri: url,
             store_id: 13,
-        }, "api/user/createauthorizeurl", res => {
-            // return
-            // location.href = res.data
-            console.log(res)
-        })
+        },
+            "api/order/pay_createauthorizeurl",
+            res => {
+                // return
+                location.href = res.data
+                console.log(res)
+            })
     },
 
+    // 登录
     login() {
         if (localStorage.access_token) {
             this.getUserInfo()
@@ -121,6 +127,36 @@ var myfn = {
         this.ajax('GET', {}, 'api/user/user_info', res => {
             localStorage.userinfo = JSON.stringify(res.data)
         })
+    },
+
+
+    // 支付步骤
+    payment_steps(type, id) {
+        this.ajax(
+            "post",
+            {
+                target_type: type,
+                target_id: id,
+                pay_method: 3
+            },
+            "api/order/create_order",
+            res => {
+                console.log(res);
+                // 生成支付信息
+                this.ajax(
+                    "post",
+                    {
+                        order_id: res.data.id,
+                        pay_method: 3
+                    },
+                    "api/order/pay_order",
+                    result => {
+                        console.log(result);
+                        // this.wxPay(result);
+                    }
+                );
+            }
+        );
     },
 
     wxconfig() {

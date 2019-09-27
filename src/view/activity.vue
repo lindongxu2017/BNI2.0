@@ -48,103 +48,90 @@ export default {
       shareVisible: false,
       userInfo: {},
       code_QR: "",
-      timer:undefined,
-      sign_status:false, // 签到状态
+      timer: undefined,
+      sign_status: false // 签到状态
     };
   },
   mounted() {},
   methods: {
-    sign(id) {
+    sign(options) {
       // var id = options.id;
-
+      console.log(options);
+      if (options.active_id == "") {
+        this.$router.push({ name: "sign", params: { id: options.id } });
+        return;
+      }
       // 获取生成的签到二维码
-      this.fn.ajax("post", { id }, "api/active_info/create_qrcode", res => {
-        console.log(res);
-        //
-        if (res.code == "5000") {
-          // 未激活
-          var userType = JSON.parse(localStorage.userinfo).type;
-          if (userType == "3" || userType == "2") {
-            // 活动报名激活
-            this.fn.ajax("post", { id }, "api/active_info/activate", result => {
-              console.log(result);
-              if (result.code == "5001") {
-                // 没有可支付的付费订单
-                // 创建会费订单
-                this.fn.ajax(
-                  "post",
-                  {},
-                  "api/active_info_order/create_order",
-                  result1 => {
-                    console.log(result1);
-                    // 创建支付订单
+      this.fn.ajax(
+        "post",
+        { id: options.active_id },
+        "api/active_info/create_qrcode",
+        res => {
+          console.log(res);
+          //
+          if (res.code == "5000") {
+            // 未激活
+            var userType = JSON.parse(localStorage.userinfo).type;
+            if (userType == "3" || userType == "2") {
+              // 活动报名激活
+              this.fn.ajax(
+                "post",
+                { id: options.active_id },
+                "api/active_info/activate",
+                result => {
+                  console.log(result);
+                  if (result.code == "5001") {
+                    // 没有可支付的付费订单
+                    // 创建会费订单
                     this.fn.ajax(
                       "post",
-                      {
-                        target_type: 1,
-                        target_id: result1.data.id,
-                        pay_method: 3
-                      },
-                      "api/order/create_order",
-                      result2 => {
-                        console.log(result2);
-
-                        // 生成支付信息
-                        this.fn.ajax(
-                          "post",
-                          {
-                            order_id: result2.data.id,
-                            pay_method: 3
-                          },
-                          "api/order/pay_order",
-                          result3 => {
-                            console.log(result3);
-                            this.fn.wxPay(result3);
-                          }
-                        );
+                      {},
+                      "api/active_info_order/create_order",
+                      result1 => {
+                        console.log(result1);
+                        // 创建支付订单
+                        this.fn.payment_steps(1,result1.data.id)
                       }
                     );
+                  } else {
+                    // 说明有订单,重新调用生成二维码接口
                   }
-                );
-              } else {
-                // 说明有订单,重新调用生成二维码接口
-              }
-            });
+                }
+              );
+            }else{
+              this.$toast("请等待审核");
+            }
+          } else {
+            this.show = true;
+            this.code_QR = res.data;
+            this.code_loading = true;
+            setTimeout(() => {
+              this.code_loading = false;
+            }, 500);
+
+            this.timer = setInterval(() => {
+              this.fn.ajax("post", { id }, "api/active_info/info", res => {
+                console.log(res);
+                if (res.data.sign_status == "1") {
+                  this.sign_status = true;
+                  this.closed();
+                } else {
+                }
+              });
+            }, 2000);
           }
-        } else {
-          this.show = true;
-          this.code_QR = res.data;
-          this.code_loading = true;
-          setTimeout(() => {
-            this.code_loading = false;
-          }, 500);
-
-          this.timer = setInterval(() => {
-            this.fn.ajax("post",{id},"api/active_info/info",res =>{
-              console.log(res)
-              if (res.data.sign_status == "1") {
-                this.sign_status = true;
-                this.closed()
-              }else{
-
-              }
-            })
-          }, 2000);
         }
-      });
+      );
     },
     share() {
       this.shareVisible = true;
     },
     // 关闭扫二维码弹窗,清除定时器
-    closed(){
+    closed() {
       this.show = false;
-      clearInterval(this.timer)
+      clearInterval(this.timer);
     },
-    // 创建订单
-    getPaymentMsg() {
-      this.fn.ajax("post", {}, "api/active_info_order/create_order", res => {});
-    },
+    
     // 获取活动列表
     getlist() {
       this.fn.ajax(
@@ -167,11 +154,51 @@ export default {
       );
     },
     // 检测是否微信授权
-    checkWxAuth(){
-      this.fn.ajax("get",{},"api/order/check_pay_auth",res =>{
-        console.log(res)
-        
-      })
+    checkWxAuth() {
+      // this.fn.ajax("get", {}, "api/order/check_pay_auth", res => {
+      //   console.log(res);
+      // });
+      this.axios
+        .get("api/order/check_pay_auth", {
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded",
+            token: localStorage.access_token
+          },
+          params: {
+            store_id: 13
+          }
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.code == "0") {
+            console.log(1233211234567);
+            // if (localStorage.access_token) {
+            //   this.fn.getUserInfo();
+            //   return;
+            // }
+            let code = this.fn.GetQueryString("code");
+            let state = this.fn.GetQueryString("state");
+            if (code) {
+              this.fn.ajax(
+                "POST",
+                {
+                  store_id: 13
+                },
+                "api/order/pay_third",
+                res => {
+                  console.log(res);
+
+                  localStorage.access_token = res.data.userinfo.token;
+                  // location.href = location.protocol + "//" + location.host + "/" + location.hash;
+                }
+              );
+            } else {
+              this.fn.getWxCode();
+              // location.reload()
+            }
+          }
+        })
+        .catch(e => {});
     },
     onRefresh() {
       this.list = [];
@@ -186,7 +213,7 @@ export default {
   created() {
     this.userInfo = JSON.parse(localStorage.userinfo);
     clearInterval(this.timer);
-    this.checkWxAuth()
+    this.checkWxAuth();
   }
 };
 </script>

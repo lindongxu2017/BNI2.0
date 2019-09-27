@@ -23,7 +23,7 @@ import fn from './lib/util.js'
 
 Vue.prototype.lib = lib
 Vue.prototype.fn = fn
-// Vue.prototype.axios = axios
+Vue.prototype.axios = axios
 Vue.prototype.baseUrl = "http://192.168.1.168:9102/"
 Vue.use(Vant)
 
